@@ -91,7 +91,7 @@ class SnapFstab:
     def entry(self, owner: str, endpoint_name: str) -> Optional[_SnapFstabEntry]:
         """Find and return a specific entry if it exists."""
         entries = [
-            e for e in self.entries if e.owner == owner and endpoint_name in e.endpoint_source
+            e for e in self.entries if e.owner == owner
         ]
         if len(entries) > 1 or not entries:
             logger.debug(
@@ -389,9 +389,9 @@ class GrafanaAgentMachineCharm(GrafanaAgentCharm):
         for endpoint in self._cos.snap_log_endpoints:
             fstab_entry = agent_fstab.entry(endpoint.owner, endpoint.name)
             target_path = (
-                fstab_entry.target
+                f"{fstab_entry.target}/*"
                 if fstab_entry
-                else f"/snap/grafana-agent/current/shared-logs/{endpoint.name}"
+                else f"/snap/grafana-agent/current/shared-logs/{endpoint.name}/*"
             )
             job = {
                 "job_name": endpoint.owner,
